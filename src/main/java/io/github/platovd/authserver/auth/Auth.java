@@ -19,7 +19,12 @@ public class Auth {
 
     @Indexed(unique = true)
     @Field(name = "provider_user_id")
-    private String providerUserId;
+    @Builder.Default
+    private String providerUserId = null;
+
+    @Indexed(unique = true)
+    @Field(name = "username")
+    private String username;
 
     @Indexed(unique = true)
     @Field(name = "email")
@@ -29,5 +34,6 @@ public class Auth {
     private String password;
 
     @Field(name = "auth_provider")
-    private AuthProvider provider;
+    @Builder.Default
+    private AuthProvider provider = AuthProvider.NO_PROVIDER;
 }

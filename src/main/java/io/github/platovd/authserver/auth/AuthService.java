@@ -18,19 +18,26 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthMapper mapper;
 
-    public String registerUser(RegistrationRequest request) {
+    public Auth registerUser(RegistrationRequest request) {
         try {
             Auth auth = mapper.registrationRequestToAuth(request);
 
-            String encodedPassword = passwordEncoder.encode(request.password());
+            String encodedPassword = passwordEncoder.encode(request.getPassword());
             auth.setPassword(encodedPassword);
 
             repository.save(auth);
 
-            return auth.getId();
+            return auth;
         } catch (DuplicateKeyException exception) {
             throw new ExistingUniqInformationException(extractDuplicateField(exception));
         }
+    }
+
+    public ExtendedRegistrationRequest registerWithExtendingRequest(RegistrationRequest request) {
+        String id = registerUser(request).getId();
+        ExtendedRegistrationRequest extendedRequest = mapper.registrationRequestToExtendedVersion(request);
+        extendedRequest.setId(id);
+        return extendedRequest;
     }
 
     private String extractDuplicateField(DuplicateKeyException e) {
@@ -40,7 +47,7 @@ public class AuthService {
         return "Duplicate field value";
     }
 
-    public String loginUser(LoginRequest request) {
+    public Auth loginUser(LoginRequest request) {
         Auth auth = repository.findByEmail(request.email());
 
         if (Objects.isNull(auth)) throw new AuthNotFoundException("Auth wasn't found with provided email");
@@ -51,6 +58,14 @@ public class AuthService {
         if (!passwordEncoder.matches(request.password(), auth.getPassword()))
             throw new WrongCredentialsException("Wrong credentials was given");
 
-        return auth.getId();
+        return auth;
+    }
+
+    public Auth getAuthById(String authId) {
+        return repository.findById(authId).orElseThrow(() -> new AuthNotFoundException("Auth wasn't found"));
+    }
+
+    public AuthMessage buildMessage(ExtendedRegistrationRequest extendedRequest) {
+        return mapper.registrationRequestToMessage(extendedRequest);
     }
 }

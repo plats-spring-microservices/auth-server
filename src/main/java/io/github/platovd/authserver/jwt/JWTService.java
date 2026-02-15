@@ -88,4 +88,14 @@ public class JWTService {
     public boolean isTypeOf(DecodedJWT decodedToken, String type) {
         return Objects.equals(decodedToken.getClaim("type").as(String.class), type);
     }
+
+    public JWTResponse generateResponseForAuth(Auth auth) {
+        return new JWTResponse(
+                createAccessToken(auth),
+                createRefreshToken(auth),
+                "Bearer",
+                states.getExpirationTimeSeconds(),
+                states.getExpirationTimeSecondsRefresh()
+        );
+    }
 }

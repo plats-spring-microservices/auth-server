@@ -4,7 +4,7 @@ public record JWTResponse(
         String accessToken,
         String refreshToken,
         String tokenType,
-        Integer expiresIn,
-        Integer refreshExpiresIn
+        Long expiresIn,
+        Long refreshExpiresIn
 ) {
 }

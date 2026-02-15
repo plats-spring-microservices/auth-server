@@ -2,16 +2,18 @@ package io.github.platovd.authserver.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegistrationRequest {
+@Builder
+public class ExtendedRegistrationRequest {
+    private String id;
+    private AuthProvider provider;
+    private String providerUserId;
+
     @NotBlank(message = "Username should be provided")
     private String username;
     @NotBlank(message = "Firstname should be provided")

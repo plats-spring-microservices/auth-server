@@ -1,4 +1,7 @@
 package io.github.platovd.authserver.auth;
 
-public record LoginRequest() {
+public record LoginRequest(
+        String email,
+        String password
+) {
 }

@@ -24,7 +24,7 @@ public class AuthFacade {
         ExtendedRegistrationRequest extendedRequest = authService.registerWithExtendingRequest(request);
         extendedRequest.setProvider(AuthProvider.NO_PROVIDER);
         extendedRequest.setProviderUserId(extendedRequest.getId());
-        AuthMessage message = authService.buildMessage(extendedRequest);
+        UserCreationMessage message = authService.buildMessage(extendedRequest);
         log.info(message.toString());
         // push the event in rabbit
         producer.sendMessage(userCreationStates.getUserCreationQueueName(), message);

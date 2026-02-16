@@ -11,14 +11,14 @@ public class AuthMapper {
                 .build();
     }
 
-    public AuthMessage registrationRequestToMessage(ExtendedRegistrationRequest request) {
-        return new AuthMessage(
+    public UserCreationMessage registrationRequestToMessage(ExtendedRegistrationRequest request) {
+        return new UserCreationMessage(
                 request.getId(),
                 request.getUsername(),
                 request.getEmail(),
                 request.getFirstName(),
                 request.getLastName(),
-                request.getProvider(),
+                request.getProvider().name(),
                 request.getProviderUserId()
         );
     }

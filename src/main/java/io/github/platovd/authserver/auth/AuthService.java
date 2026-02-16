@@ -65,7 +65,7 @@ public class AuthService {
         return repository.findById(authId).orElseThrow(() -> new AuthNotFoundException("Auth wasn't found"));
     }
 
-    public AuthMessage buildMessage(ExtendedRegistrationRequest extendedRequest) {
+    public UserCreationMessage buildMessage(ExtendedRegistrationRequest extendedRequest) {
         return mapper.registrationRequestToMessage(extendedRequest);
     }
 }
